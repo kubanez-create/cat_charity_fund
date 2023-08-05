@@ -1,21 +1,11 @@
-from typing import Optional
 from datetime import datetime
+from typing import Optional
 
-from pydantic import NonNegativeInt  # BaseModel, root_validator, validator, Extra,Field, PositiveInt, 
-
-from .base import ProjectBaseModel
-
-
-class DonationBase(ProjectBaseModel):
-    invested_amount: NonNegativeInt
-    fully_invested: bool
-    create_date: datetime
-    close_date: Optional[datetime]
-    comment: Optional[str]
-    user_id: int
+from pydantic import BaseModel, NonNegativeInt, PositiveInt
 
 
-class DonationCreate(ProjectBaseModel):
+class DonationCreate(BaseModel):
+    full_amount: PositiveInt
     comment: Optional[str]
 
 
@@ -27,7 +17,12 @@ class DonationDB(DonationCreate):
         orm_mode = True
 
 
-class DonationsDB(DonationBase):
+class DonationsDB(DonationCreate):
+    invested_amount: NonNegativeInt
+    fully_invested: bool
+    create_date: datetime
+    close_date: Optional[datetime]
+    user_id: int
     id: int
 
     class Config:
