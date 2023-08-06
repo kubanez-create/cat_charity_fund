@@ -1,15 +1,8 @@
-from datetime import datetime
+from sqlalchemy import Column, ForeignKey, Integer, Text
 
-from sqlalchemy import Column, DateTime, Integer, Text, Boolean, ForeignKey
-
-from app.core.db import Base
+from .base import BaseModel
 
 
-class Donation(Base):
-    user_id = Column(Integer, ForeignKey('user.id'))
+class Donation(BaseModel):
+    user_id = Column(Integer, ForeignKey("user.id"))
     comment = Column(Text)
-    full_amount = Column(Integer)
-    invested_amount = Column(Integer, default=0)
-    fully_invested = Column(Boolean, default=False)
-    create_date = Column(DateTime, default=datetime.utcnow())
-    close_date = Column(DateTime)

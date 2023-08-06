@@ -1,15 +1,8 @@
-from datetime import datetime
+from sqlalchemy import Column, String, Text
 
-from sqlalchemy import Column, String, Text, Integer, Boolean, DateTime
-
-from app.core.db import Base
+from .base import BaseModel
 
 
-class CharityProject(Base):
+class CharityProject(BaseModel):
     name = Column(String(100), unique=True, nullable=False)
     description = Column(Text(1), nullable=False)
-    full_amount = Column(Integer)
-    invested_amount = Column(Integer, default=0)
-    fully_invested = Column(Boolean, default=False)
-    create_date = Column(DateTime, default=datetime.now())
-    close_date = Column(DateTime)
