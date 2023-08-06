@@ -21,6 +21,7 @@ async def create_donation(
     session: AsyncSession = Depends(get_async_session),
     user: User = Depends(current_user),
 ):
+    """Доступен для авторизованных пользователей."""
     new_donation = await donation_crud.create(reservation, session, user)
     new_donation = await invest(don_obj=new_donation, session=session)
     return new_donation
@@ -35,6 +36,7 @@ async def get_all_donations(
     session: AsyncSession = Depends(get_async_session),
     user: User = Depends(current_superuser),
 ):
+    """Только для суперюзеров."""
     donations = await donation_crud.get_multi(session)
     return donations
 

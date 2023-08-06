@@ -3,10 +3,10 @@ from typing import Union
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import CharityProject, Donation
 from app.crud.base import CRUDBase
 from app.crud.charity_project import project_crud
 from app.crud.donation import donation_crud
+from app.models import CharityProject, Donation
 
 
 async def dole_out(
@@ -16,6 +16,17 @@ async def dole_out(
     crud_func: CRUDBase,
     session: AsyncSession
 ):
+    """Change database objects according to a new donation or project.
+
+    Args:
+        container (Union[CharityProject, Donation]): added object
+        item (Union[CharityProject, Donation]): added donation
+        crud_func (CRUDBase): crud function
+        session (AsyncSession): session object
+
+    Returns:
+        container (Union[CharityProject, Donation]): added object
+    """
     items = await crud_func.get_active(session=session)
     if not items:
         return container
@@ -48,21 +59,32 @@ async def dole_out(
 
 
 async def invest(
-    *,
-    project: CharityProject = None,
+    *, project: CharityProject = None,
     don_obj: Donation = None,
     session: AsyncSession
 ) -> Union[None, CharityProject, Donation]:
+    """Change databade objects according to a new one.
+
+    Args:
+        session (AsyncSession): session object
+        project (CharityProject, optional): added project. Defaults to None.
+        don_obj (Donation, optional): added donation. Defaults to None.
+
+    Returns:
+        Union[None, CharityProject, Donation]: added object
+    """
     if project is not None:
         return await dole_out(
             container=project,
             item=don_obj,
             crud_func=donation_crud,
-            session=session)
+            session=session
+        )
 
     if don_obj is not None:
         return await dole_out(
             container=don_obj,
             item=project,
             crud_func=project_crud,
-            session=session)
+            session=session
+        )

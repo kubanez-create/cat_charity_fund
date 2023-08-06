@@ -48,7 +48,7 @@ async def create_project(
 async def get_all_projects(
     session: AsyncSession = Depends(get_async_session),
 ):
-    """Только для суперюзеров."""
+    """Доступно для всех."""
     all_projects = await project_crud.get_multi(session)
     return all_projects
 
