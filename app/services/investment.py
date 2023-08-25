@@ -35,19 +35,20 @@ async def dole_out(
         money_left = item_obj.full_amount - item_obj.invested_amount
         if money_left < famount:
             container.invested_amount += money_left
-            item_obj.invested_amount = item_obj.full_amount
+            item_obj.invested_amount += money_left
             item_obj.fully_invested = True
             item_obj.close_date = datetime.utcnow()
+            famount -= money_left
         elif money_left == famount:
             container.invested_amount += money_left
-            item_obj.invested_amount = item_obj.full_amount
+            item_obj.invested_amount += item_obj.full_amount
             item_obj.fully_invested = True
             item_obj.close_date = datetime.utcnow()
             container.fully_invested = True
             container.close_date = datetime.utcnow()
             break
         else:
-            container.invested_amount = famount
+            container.invested_amount += famount
             container.fully_invested = True
             container.close_date = datetime.utcnow()
             item_obj.invested_amount += famount
